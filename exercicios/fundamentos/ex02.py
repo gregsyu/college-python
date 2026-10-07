@@ -13,7 +13,7 @@ while i < 10:
             print("Não pode tirar \x1b[31mCNH\x1b[m: Pessoa não alfabetizada!")
     else:
         print("Não pode tirar \x1b[31mCNH\x1b[m: Pessoa menor de Idade!")
-    print("")
+    print()
     i += 1
     total += 1
 
