@@ -1,3 +1,4 @@
 [tool.pyright]
 reportPossiblyUnboundVariable = false
 reportUnknownVariableType = false
+reportUnknownMemberType = false
