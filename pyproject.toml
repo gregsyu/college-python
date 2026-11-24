@@ -2,3 +2,6 @@
 reportPossiblyUnboundVariable = false
 reportUnknownVariableType = false
 reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnusedCallResult = false
+reportImplicitRelativeImport = false
