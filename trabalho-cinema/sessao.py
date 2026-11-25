@@ -11,13 +11,15 @@ def pegar_sessoes():
             for linha in f:
                 p = linha.strip().split("|")
                 if len(p) == 5:
-                    sessoes.append({
-                        "codigo": p[0],
-                        "codigo_filme": p[1],
-                        "sala": p[2],
-                        "horario": p[3],
-                        "lugares": int(p[4])
-                    })
+                    sessoes.append(
+                        {
+                            "codigo": p[0],
+                            "codigo_filme": p[1],
+                            "sala": p[2],
+                            "horario": p[3],
+                            "lugares": int(p[4]),
+                        }
+                    )
     return sessoes
 
 
@@ -25,8 +27,8 @@ def salvar_sessoes(sessoes):
     with open(SESSOES, "w", encoding="utf-8") as f:
         for s in sessoes:
             f.write(
-                f"{s['codigo']}|{s['codigo_filme']}|{s['sala']}|" +
-                f"{s['horario']}|{s['lugares']}\n"
+                f"{s['codigo']}|{s['codigo_filme']}|{s['sala']}|"
+                + f"{s['horario']}|{s['lugares']}\n"
             )
 
 
@@ -73,13 +75,15 @@ def cadastrar_sessao():
         print("Número de lugares inválido!")
         return
 
-    sessoes.append({
-        "codigo": codigo,
-        "codigo_filme": codigo_filme,
-        "sala": sala,
-        "horario": horario,
-        "lugares": lugares
-    })
+    sessoes.append(
+        {
+            "codigo": codigo,
+            "codigo_filme": codigo_filme,
+            "sala": sala,
+            "horario": horario,
+            "lugares": lugares,
+        }
+    )
     salvar_sessoes(sessoes)
     print("Sessão cadastrada com sucesso!")
 
@@ -92,8 +96,8 @@ def listar_sessoes():
     print("\n--- Lista de Sessões ---")
     for s in sessoes:
         print(
-            f"{s['codigo']} | Filme: {s['codigo_filme']} | " +
-            f"Sala: {s['sala']} | {s['horario']} | Lugares: {s['lugares']}"
+            f"{s['codigo']} | Filme: {s['codigo_filme']} | "
+            + f"Sala: {s['sala']} | {s['horario']} | Lugares: {s['lugares']}"
         )
 
 
@@ -108,9 +112,11 @@ def listar_sessoes_por_filme():
     if not encontradas:
         print("Nenhuma sessão encontrada para este filme.")
         return
+
     print(f"\n--- Sessões do filme {codigo_filme} ---")
+
     for s in encontradas:
         print(
-            f"{s['codigo']} | Sala: {s['sala']} | " +
-            f"{s['horario']} | Lugares: {s['lugares']}"
+            f"{s['codigo']} | Sala: {s['sala']} | "
+            + f"{s['horario']} | Lugares: {s['lugares']}"
         )

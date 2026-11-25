@@ -1,11 +1,11 @@
-import os
+from os.path import exists
 
 FILMES = "filmes.txt"
 
 
-def codigo_existe(lista, codigo, chave="codigo"):
+def codigo_existe(lista, codigo):
     for item in lista:
-        if item[chave] == codigo:
+        if item["codigo"] == codigo:
             return True
     return False
 
@@ -13,26 +13,29 @@ def codigo_existe(lista, codigo, chave="codigo"):
 def pegar_filmes():
     filmes: list[dict[str, str]] = []
 
-    if os.path.exists(FILMES):
-        with open(FILMES, "r", encoding="utf-8") as f:
-            for linha in f:
+    if exists(FILMES):
+        with open(FILMES, "r", encoding="utf-8") as arq:
+            for linha in arq:
                 p = linha.strip().split("|")
                 if len(p) == 4:
-                    filmes.append({
-                        "codigo": p[0],
-                        "titulo": p[1],
-                        "genero": p[2],
-                        "duracao": p[3]
-                    })
+                    filmes.append(
+                        {
+                            "codigo": p[0],
+                            "titulo": p[1],
+                            "genero": p[2],
+                            "duracao": p[3],
+                        }
+                    )
     return filmes
 
 
 def salvar_filmes(filmes):
+    # "w" reescreve o arquivo do zero
     with open(FILMES, "w", encoding="utf-8") as f:
         for filme in filmes:
             f.write(
-                f"{filme['codigo']}|{filme['titulo']}|" +
-                f"{filme['genero']}|{filme['duracao']}\n"
+                f"{filme['codigo']}|{filme['titulo']}|"
+                + f"{filme['genero']}|{filme['duracao']}\n"
             )
 
 
@@ -68,12 +71,10 @@ def cadastrar_filme():
     titulo = input("Título: ").strip()
     genero = input("Gênero: ").strip()
     duracao = input("Duração (minutos): ").strip()
-    filmes.append({
-        "codigo": codigo,
-        "titulo": titulo,
-        "genero": genero,
-        "duracao": duracao
-    })
+    filmes.append(
+        {"codigo": codigo, "titulo": titulo,
+            "genero": genero, "duracao": duracao}
+    )
     salvar_filmes(filmes)
     print("Filme cadastrado com sucesso!")
 
@@ -103,6 +104,6 @@ def listar_filmes():
 
     for f in filmes:
         print(
-            f"{f['codigo']} | {f['titulo']} | " +
-            f"{f['genero']} | {f['duracao']} min"
+            f"{f['codigo']} | {f['titulo']} | "
+            + f"{f['genero']} | {f['duracao']} min"
         )

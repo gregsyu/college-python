@@ -17,12 +17,12 @@ def pegar_ingressos():
 
 
 def salvar_ingresso(ingresso):
-    existe = exists(INGRESSOS)
-    with open(INGRESSOS, "a", encoding="utf-8", newline="") as f:
+    # "newline" impede que o python interfira nas quebras de linha
+    with open(INGRESSOS, "a", encoding="utf-8", newline="") as arq:
         writer = csv.DictWriter(
-            f, fieldnames=["codigo", "codigo_sessao", "nome", "cpf"]
+            arq, fieldnames=["codigo", "codigo_sessao", "nome", "cpf"]
         )
-        if not existe:
+        if not exists(INGRESSOS):
             writer.writeheader()
         writer.writerow(ingresso)
 
@@ -62,6 +62,7 @@ def vender_ingresso():
 
     codigo_sessao = input("Código da sessão: ").strip()
     sessao = None
+
     for s in sessoes:
         if s["codigo"] == codigo_sessao:
             sessao = s
@@ -72,26 +73,23 @@ def vender_ingresso():
         return
 
     if sessao["lugares"] <= 0:
-        print("Sessão esgotada! Não é possível vender mais ingressos.")
+        print("Sessão esgotada! Não é possível vender mais ingressos")
         return
 
     nome = input("Nome do cliente: ").strip()
     cpf = input("CPF: ").strip()
 
-    # Diminui os lugares
     sessao["lugares"] -= 1
     salvar_sessoes(sessoes)
 
-    # Salva o ingresso
-    salvar_ingresso({
-        "codigo": codigo,
-        "codigo_sessao": codigo_sessao,
-        "nome": nome,
-        "cpf": cpf
-    })
+    salvar_ingresso(
+        {"codigo": codigo, "codigo_sessao": codigo_sessao,
+            "nome": nome, "cpf": cpf}
+    )
     print("Ingresso vendido com sucesso!")
+
     if sessao["lugares"] == 0:
-        print("Atenção: esta sessão agora está esgotada.")
+        print("Atenção: essa sessão agora está esgotada")
 
 
 def buscar_ingresso():
@@ -109,14 +107,14 @@ def buscar_ingresso():
 
 def listar_ingressos_por_sessao():
     ingressos = pegar_ingressos()
-    codigo_sessao = input("Código da sessão: ").strip()
+    codigo_sessao = input("Codigo da sessão: ").strip()
     encontrados = []
     for i in ingressos:
         if i["codigo_sessao"] == codigo_sessao:
             encontrados.append(i)
 
     if not encontrados:
-        print("Nenhum ingresso encontrado para esta sessão.")
+        print("Nenhum ingresso encontrado para essa sessão")
         return
     print(f"\n--- Ingressos da sessão {codigo_sessao} ---")
     for i in encontrados:
@@ -124,13 +122,16 @@ def listar_ingressos_por_sessao():
 
 
 def listar_ingressos():
-    ingressos = pegar_ingressos()
+    ingressos: list[dict[str, str]] = pegar_ingressos()
+
     if not ingressos:
         print("Nenhum ingresso vendido.")
         return
+
     print("\n--- Todos os Ingressos ---")
+
     for i in ingressos:
         print(
-            f"{i['codigo']} | Sessão: {i['codigo_sessao']} | " +
-            f"{i['nome']} | CPF: {i['cpf']}"
+            f"{i['codigo']} | Sessão: {i['codigo_sessao']} | "
+            + f"{i['nome']} | CPF: {i['cpf']}"
         )
