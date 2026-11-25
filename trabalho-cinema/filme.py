@@ -11,7 +11,7 @@ def codigo_existe(lista, codigo):
 
 
 def pegar_filmes():
-    filmes: list[dict[str, str]] = []
+    filmes: list[dict[str, str | int]] = []
 
     if exists(FILMES):
         with open(FILMES, "r", encoding="utf-8") as arq:
@@ -57,20 +57,26 @@ def menu_filme():
         elif op == "0":
             break
         else:
-            print("Opção inválida!")
+            print("Opção invalida!")
 
 
 def cadastrar_filme():
     filmes = pegar_filmes()
-    codigo = input("Código do filme: ").strip()
+    codigo = input("Codigo do filme: ").strip()
 
     if codigo_existe(filmes, codigo):
         print("Código já existe!")
         return
 
-    titulo = input("Título: ").strip()
-    genero = input("Gênero: ").strip()
-    duracao = input("Duração (minutos): ").strip()
+    titulo = input("Titulo: ").strip()
+    genero = input("Gênero: ").strip().lower()
+
+    try:
+        duracao = int(input("Duração (minutos): "))
+    except ValueError:
+        print("Insira apenas numeros!")
+        return
+
     filmes.append(
         {"codigo": codigo, "titulo": titulo,
             "genero": genero, "duracao": duracao}
@@ -85,9 +91,9 @@ def buscar_filme():
 
     for f in filmes:
         if f["codigo"] == codigo:
-            print(f"\nCódigo: {f['codigo']}")
-            print(f"Título: {f['titulo']}")
-            print(f"Gênero: {f['genero']}")
+            print(f"\nCodigo: {f['codigo']}")
+            print(f'Titulo: "{f['titulo']}"')
+            print(f"Genero: {f['genero']}")
             print(f"Duração: {f['duracao']} min")
             return
     print("Filme não encontrado.")
@@ -101,6 +107,8 @@ def listar_filmes():
         return
 
     print("\n--- Lista de Filmes ---")
+
+    print("codigo | titulo | genero | duracao")
 
     for f in filmes:
         print(

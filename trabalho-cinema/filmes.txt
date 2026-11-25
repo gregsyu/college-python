@@ -1,0 +1,10 @@
+5a1|Batman: Endgame|terror|53
+4b31|Como Treinar o Seu Dragao|animacao|98
+4a44|Piratas do Caribe|aventura|143
+4a45|Up: Altas Aventuras|animacao|96
+4a47|Midsommar|terror|148
+4a48|A Rede Social|drama|120
+4a49|Shutter Island|suspense|138
+4a50|Duna|ficcao cientifica|155
+4a51|O Resgate do Soldado Ryan|guerra|169
+4b12|Xuxa contra o baixo astral|terror|180

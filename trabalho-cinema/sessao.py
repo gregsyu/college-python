@@ -1,4 +1,4 @@
-import os
+from os.path import exists
 from filme import codigo_existe, pegar_filmes
 
 SESSOES = "sessoes.txt"
@@ -6,7 +6,7 @@ SESSOES = "sessoes.txt"
 
 def pegar_sessoes():
     sessoes = []
-    if os.path.exists(SESSOES):
+    if exists(SESSOES):
         with open(SESSOES, "r", encoding="utf-8") as f:
             for linha in f:
                 p = linha.strip().split("|")
@@ -24,9 +24,9 @@ def pegar_sessoes():
 
 
 def salvar_sessoes(sessoes):
-    with open(SESSOES, "w", encoding="utf-8") as f:
+    with open(SESSOES, "w", encoding="utf-8") as arq:
         for s in sessoes:
-            f.write(
+            arq.write(
                 f"{s['codigo']}|{s['codigo_filme']}|{s['sala']}|"
                 + f"{s['horario']}|{s['lugares']}\n"
             )
@@ -69,10 +69,20 @@ def cadastrar_sessao():
 
     sala = input("Sala: ").strip()
     horario = input("Horário: ").strip()
+
+    for s in sessoes:
+        if s['sala'] == sala and s['horario'] == horario:
+            print("Já existe uma sessao nessa sala e no mesmo horario")
+            return
+
     try:
-        lugares = int(input("Lugares disponíveis: ").strip())
+        lugares = int(input("Lugares disponiveis (no maximo 100): ").strip())
     except ValueError:
-        print("Número de lugares inválido!")
+        print("Número de lugares invalido!")
+        return
+
+    if lugares > 100 or lugares < 0:
+        print("Número de lugares invalido!")
         return
 
     sessoes.append(
@@ -90,10 +100,13 @@ def cadastrar_sessao():
 
 def listar_sessoes():
     sessoes = pegar_sessoes()
+
     if not sessoes:
         print("Nenhuma sessão cadastrada.")
         return
+
     print("\n--- Lista de Sessões ---")
+
     for s in sessoes:
         print(
             f"{s['codigo']} | Filme: {s['codigo_filme']} | "

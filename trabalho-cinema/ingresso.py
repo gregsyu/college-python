@@ -9,20 +9,22 @@ INGRESSOS = "ingressos.csv"
 def pegar_ingressos():
     ingressos = []
     if exists(INGRESSOS):
-        with open(INGRESSOS, "r", encoding="utf-8") as f:
-            leitor = csv.DictReader(f)
+        with open(INGRESSOS, "r", encoding="utf-8") as arq:
+            leitor = csv.DictReader(arq)
             for linha in leitor:
                 ingressos.append(linha)
     return ingressos
 
 
 def salvar_ingresso(ingresso):
+    existe = exists(INGRESSOS)
+
     # "newline" impede que o python interfira nas quebras de linha
     with open(INGRESSOS, "a", encoding="utf-8", newline="") as arq:
         writer = csv.DictWriter(
             arq, fieldnames=["codigo", "codigo_sessao", "nome", "cpf"]
         )
-        if not exists(INGRESSOS):
+        if not existe:
             writer.writeheader()
         writer.writerow(ingresso)
 
